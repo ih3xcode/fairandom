@@ -1,0 +1,4 @@
+add_executable(test_fairandom test_fairandom.c)
+target_link_libraries(test_fairandom fairandom)
+
+add_test(NAME test_fairandom COMMAND test_fairandom)
