@@ -1,6 +1,6 @@
-#include <fairandom/fairandom.h>
+#include <stdio.h>
 
 int main(void) {
-    fr_hello();
-    return 0;
+  printf("Not implemented yet\n");
+  return 0;
 }
