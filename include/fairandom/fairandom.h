@@ -23,6 +23,8 @@ typedef struct {
         0x0c, 0x0d, 0x0e, 0x0f                                              \
   }
 
+#define FR_FULL_BLOCK_LEN(x) ceil(x / FR_ROUND_HASH_LEN) * FR_ROUND_HASH_LEN
+
 fr_generator_t *fr_generator_new(uint32_t rounds, const char salt[FR_SALT_LEN]);
 void fr_generator_free(fr_generator_t *generator);
 
