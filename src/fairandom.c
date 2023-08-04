@@ -7,6 +7,9 @@
 fr_generator_t *fr_generator_new(uint32_t rounds,
                                  const char salt[FR_SALT_LEN]) {
   fr_generator_t *generator = malloc(sizeof(fr_generator_t));
+  if (generator == NULL) {
+    return NULL;
+  }
   generator->rounds = rounds;
   memcpy(generator->salt, salt, 16);
   return generator;
