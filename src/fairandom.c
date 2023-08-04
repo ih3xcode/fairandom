@@ -40,8 +40,8 @@ void fr_generator_getseed(fr_generator_t *generator, char *output,
 }
 
 void fr_generate(fr_generator_t *generator, char *output, size_t output_len) {
-  assert(output_len <= generator->seed_len);
-  uint32_t blocks_count = ceil(output_len / FR_ROUND_HASH_LEN);
+  assert(FR_FULL_BLOCK_LEN(output_len) <= generator->seed_len);
+  uint32_t blocks_count = ceil((double)output_len / (double)FR_ROUND_HASH_LEN);
   char *blocks[blocks_count];
 
   // Split generator->seed into blocks and hash each block

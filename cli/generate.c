@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <fairandom/fairandom.h>
 #include <fairandom/hex.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <xcmdparser.h>
@@ -93,8 +94,9 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
     return CMDP_ACT_ERROR;
   }
 
+  int seed_len = FR_FULL_BLOCK_LEN(length);
   if (arg_generate.random_seed) {
-    fr_generator_seed(generator, FR_SEED_TYPE_RANDOM, NULL, length);
+    fr_generator_seed(generator, FR_SEED_TYPE_RANDOM, NULL, seed_len);
   } else {
     FILE *fp = fopen(input_file, "rb");
     if (fp == NULL) {
@@ -106,26 +108,26 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
     size_t input_file_size = ftell(fp);
     fseek(fp, 0, SEEK_SET);
 
-    if (input_file_size < length) {
+    if (input_file_size < seed_len) {
       fprintf(stderr, "fatal: input file must be at least %d bytes in length\n",
-              length);
+              seed_len);
       return CMDP_ACT_ERROR;
     }
 
-    char *input = malloc(length);
+    char *input = malloc(seed_len);
     if (input == NULL) {
       fprintf(stderr, "malloc(): %s\n", (char *)strerror(errno));
       return CMDP_ACT_ERROR;
     }
 
-    if (fread(input, 1, length, fp) != length) {
+    if (fread(input, 1, seed_len, fp) != seed_len) {
       fprintf(stderr, "fread(): %s\n", (char *)strerror(errno));
       return CMDP_ACT_ERROR;
     }
 
     fclose(fp);
 
-    fr_generator_seed(generator, FR_SEED_TYPE_STRING, input, length);
+    fr_generator_seed(generator, FR_SEED_TYPE_STRING, input, seed_len);
     free(input);
   }
 

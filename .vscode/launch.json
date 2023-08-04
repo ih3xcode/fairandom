@@ -9,7 +9,13 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/cli/fairandom-cli",
-            "args": [],
+            "args": [
+                "generate",
+                "-R",
+                "4",
+                "--random-seed",
+                "255"
+            ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
