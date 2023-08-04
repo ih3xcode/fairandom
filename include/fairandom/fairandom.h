@@ -25,8 +25,14 @@ typedef struct {
         0x0c, 0x0d, 0x0e, 0x0f                                              \
   }
 
+#ifdef FR_USE_DOUBLE_ARITHMETIC
+#define FR_LIGHT_CEIL(x, y) ceil((double)x / (double)y)
+#else
+#define FR_LIGHT_CEIL(x, y) ((x / y) + (x % y != 0))
+#endif
+
 #define FR_FULL_BLOCK_LEN(x) \
-  ceil((double)x / (double)FR_ROUND_HASH_LEN) * FR_ROUND_HASH_LEN
+  FR_LIGHT_CEIL(x, FR_ROUND_HASH_LEN) * FR_ROUND_HASH_LEN
 
 fr_generator_t *fr_generator_new(uint32_t rounds, const char salt[FR_SALT_LEN]);
 void fr_generator_free(fr_generator_t *generator);
