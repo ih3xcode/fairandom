@@ -2,10 +2,8 @@
 
 #include "cli.h"
 
-struct arg_top arg_top;
+struct g_arg_top g_arg_top;
 
-extern cmdp_command_st cmdp_generate;
-extern cmdp_command_st cmdp_verify;
 static cmdp_action_t cb_top_level(cmdp_process_param_st *params);
 
 static cmdp_command_st cmdp_top = {
@@ -15,8 +13,9 @@ static cmdp_command_st cmdp_top = {
         "\n",
     .options =
         (cmdp_option_st[]){
-            {'v', "version", "Show version", CMDP_TYPE_BOOL, &arg_top.version},
-            {'s', "silent", "Silent mode", CMDP_TYPE_BOOL, &arg_top.silent},
+            {'v', "version", "Show version", CMDP_TYPE_BOOL,
+             &g_arg_top.version},
+            {'s', "silent", "Silent mode", CMDP_TYPE_BOOL, &g_arg_top.silent},
             {0},
         },
     .sub_commands =
@@ -33,7 +32,7 @@ int main(int argc, char **argv) {
 }
 
 static cmdp_action_t cb_top_level(cmdp_process_param_st *params) {
-  if (arg_top.version) {
+  if (g_arg_top.version) {
     printf("fairandom-cli version 0.1.0\n");
     return CMDP_ACT_OK;
   } else if (params->next == NULL) {

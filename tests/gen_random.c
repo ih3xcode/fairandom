@@ -11,11 +11,11 @@ int main(void) {
   char outputs[TESTS_COUNT][TEST_VECTOR_LEN];
 
   for (int i = 0; i < TESTS_COUNT; i++) {
-    fr_generator_t *generator =
+    FrGenerator *generator =
         fr_generator_new(FR_DEFAULT_ROUNDS, FR_DEFAULT_SALT);
     fr_generator_seed(generator, FR_SEED_TYPE_RANDOM, NULL, TEST_VECTOR_LEN);
 
-    fr_generate(generator, outputs[i], TEST_VECTOR_LEN);
+    fr_generator_generate(generator, outputs[i], TEST_VECTOR_LEN);
 
     fr_generator_free(generator);
   }

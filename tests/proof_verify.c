@@ -24,7 +24,7 @@ char TEST_VECTOR_RESULT[TEST_VECTOR_LEN] = {
     0xD8, 0xAA, 0xAA, 0x1E, 0xFC, 0xD4, 0xE5, 0xC1, 0x87};
 
 int main(void) {
-  struct fr_proof proof;
+  struct FrProof proof;
   fr_proof_from_string(&proof, TEST_VECTOR_PROOF);
 
   return !fr_verify_proof(TEST_VECTOR, TEST_VECTOR_LEN, TEST_VECTOR_RESULT,

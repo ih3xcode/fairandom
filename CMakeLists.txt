@@ -19,6 +19,9 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   # main CMakeLists.
   include(CTest)
 
+  #set(CMAKE_C_COMPILER "clang-10")
+  #set(CMAKE_CXX_COMPILER "clang-cpp-10")
+
   # Docs only available if this is the main app
   #find_package(Doxygen)
   if(Doxygen_FOUND)

@@ -18,6 +18,6 @@ const char TEST_DATA_HEX[TEST_DATA_LEN * 2 + 1] =
 
 int main(void) {
   char output[TEST_DATA_LEN];
-  fr_hex_to_bytes(TEST_DATA_HEX, TEST_DATA_LEN, output);
-  return memcmp(output, TEST_DATA_BYTES, TEST_DATA_LEN);
+  Fr_HexToBytes(TEST_DATA_HEX, TEST_DATA_LEN, output);
+  return memcmp(output, TEST_DATA_BYTES, TEST_DATA_LEN) != 0;
 }

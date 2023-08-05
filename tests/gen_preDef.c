@@ -64,13 +64,13 @@ testvec_array(test_vector_results) = {
 
 int main(void) {
   for (int i = 0; i < TEST_VECTORS_COUNT; i++) {
-    fr_generator_t *generator =
+    FrGenerator *generator =
         fr_generator_new(FR_DEFAULT_ROUNDS, FR_DEFAULT_SALT);
     fr_generator_seed(generator, FR_SEED_TYPE_STRING, test_vectors[i],
                       TEST_VECTOR_LEN);
 
     char output[TEST_VECTOR_LEN];
-    fr_generate(generator, output, TEST_VECTOR_LEN);
+    fr_generator_generate(generator, output, TEST_VECTOR_LEN);
 
     fr_generator_free(generator);
 

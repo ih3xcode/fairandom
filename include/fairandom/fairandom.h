@@ -6,17 +6,19 @@
 
 #define FR_SALT_LEN 16
 
-enum fr_seed_type {
+enum FrSeedType {
   FR_SEED_TYPE_RANDOM,
   FR_SEED_TYPE_STRING,
 };
 
-typedef struct {
+struct FrGenerator {
   uint32_t rounds;
   char salt[FR_SALT_LEN];
   char *seed;
   size_t seed_len;
-} fr_generator_t;
+};
+
+typedef struct FrGenerator FrGenerator;
 
 #define FR_DEFAULT_ROUNDS 100000
 #define FR_DEFAULT_SALT                                                     \
@@ -34,14 +36,17 @@ typedef struct {
 #define FR_FULL_BLOCK_LEN(x) \
   FR_LIGHT_CEIL(x, FR_ROUND_HASH_LEN) * FR_ROUND_HASH_LEN
 
-fr_generator_t *fr_generator_new(uint32_t rounds, const char salt[FR_SALT_LEN]);
-void fr_generator_free(fr_generator_t *generator);
+FrGenerator *fr_generator_new(uint32_t rounds, const char salt[FR_SALT_LEN]);
+void fr_generator_free(FrGenerator *generator);
 
-void fr_generator_seed(fr_generator_t *generator, enum fr_seed_type type,
+void fr_generator_seed(FrGenerator *generator, enum FrSeedType type,
                        const char *seed, size_t seed_len);
-void fr_generator_getseed(fr_generator_t *generator, char *output,
+void fr_generator_getseed(FrGenerator *generator, char *output,
                           size_t output_len);
 
-void fr_generate(fr_generator_t *generator, char *output, size_t output_len);
+void fr_generator_generate(FrGenerator *generator, char *output,
+                           size_t output_len);
 
-void fr_random(char *output, size_t output_len);
+#define Fr_Generate fr_generator_generate
+
+void _fr_random(char *output, size_t output_len);

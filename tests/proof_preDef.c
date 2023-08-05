@@ -46,12 +46,12 @@ char test_vector_proofs[TEST_VECTORS_COUNT][FR_PROOF_STRING_LEN] = {
 
 int main(void) {
   for (int i = 0; i < TEST_VECTORS_COUNT; i++) {
-    fr_generator_t *generator =
+    FrGenerator *generator =
         fr_generator_new(FR_DEFAULT_ROUNDS, FR_DEFAULT_SALT);
     fr_generator_seed(generator, FR_SEED_TYPE_STRING, test_vectors[i],
                       TEST_VECTOR_LEN);
 
-    struct fr_proof proof;
+    struct FrProof proof;
     fr_generate_proof(generator, &proof);
 
     char proof_string[FR_PROOF_STRING_LEN];
