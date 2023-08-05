@@ -51,7 +51,7 @@ void fr_proof_as_string(struct FrProof *proof, fr_bytes_t output) {
 void fr_proof_from_string(struct FrProof *proof, const fr_bytes_t input) {
   // Convert hex to bytes and then to proof struct
   fr_bytes_t proof_bytes = malloc(sizeof(struct FrProof));
-  Fr_HexToBytes(input, sizeof(struct FrProof), proof_bytes);
+  Fr_HexToBytes(input, FR_PROOF_STRING_LEN, proof_bytes);
   memcpy(&proof->rounds, proof_bytes, sizeof(uint32_t));
   memcpy(proof->salt, proof_bytes + sizeof(uint32_t), sizeof(proof->salt));
   memcpy(proof->proof, proof_bytes + sizeof(uint32_t) + sizeof(proof->salt),

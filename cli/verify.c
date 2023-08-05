@@ -5,6 +5,8 @@
 #include <string.h>
 #include <xcmdparser.h>
 
+#include "cli.h"
+
 static struct {
   bool hex;
 } arg_verify;
@@ -119,15 +121,15 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
   fclose(seed_fp);
 
   if (arg_verify.hex) {
-    data_file_size /= 2;
-    fr_bytes_t data_raw = malloc(data_file_size);
+    fr_bytes_t data_raw = malloc(data_file_size / 2);
     Fr_HexToBytes(data, data_file_size, data_raw);
+    data_file_size /= 2;
     free(data);
     data = data_raw;
 
-    seed_file_size /= 2;
-    fr_bytes_t seed_raw = malloc(seed_file_size);
+    fr_bytes_t seed_raw = malloc(seed_file_size / 2);
     Fr_HexToBytes(seed_data, seed_file_size, seed_raw);
+    seed_file_size /= 2;
     free(seed_data);
     seed_data = seed_raw;
   }
@@ -149,10 +151,10 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
   free(seed_data);
 
   if (result) {
-    printf("OK\n");
+    if (!g_arg_top.silent) printf("OK\n");
     return CMDP_ACT_OK;
   } else {
-    printf("FAIL\n");
+    if (!g_arg_top.silent) printf("FAIL\n");
     return CMDP_ACT_ERROR;
   }
 }
