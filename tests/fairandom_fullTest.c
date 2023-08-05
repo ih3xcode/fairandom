@@ -4,8 +4,7 @@
 #define TEST_DATA_LEN 1024
 
 int main(void) {
-  FrGenerator *generator =
-      fr_generator_new(FR_DEFAULT_ROUNDS, FR_DEFAULT_SALT);
+  FrGenerator *generator = fr_generator_new(FR_DEFAULT_ROUNDS, FR_DEFAULT_SALT);
   fr_generator_seed(generator, FR_SEED_TYPE_RANDOM, NULL, 1024);
 
   char data[TEST_DATA_LEN];

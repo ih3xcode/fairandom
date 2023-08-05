@@ -5,7 +5,7 @@
 #include <string.h>
 
 static void _hash_round(const char *input, size_t input_len, char *output,
-                           const char *salt, EVP_MD_CTX *mdctx) {
+                        const char *salt, EVP_MD_CTX *mdctx) {
   char *input_with_salt = malloc(input_len + FR_SALT_LEN);
   memcpy(input_with_salt, input, input_len);
   memcpy(input_with_salt + input_len, salt, FR_SALT_LEN);
