@@ -32,6 +32,8 @@ void fr_generator_getseed(FrGenerator *generator, fr_bytes_t output);
 void fr_generator_generate(FrGenerator *generator, fr_bytes_t output,
                            size_t output_len);
 
+char *fr_get_version(void);
+
 #define Fr_Generate fr_generator_generate
 
 void _fr_random(fr_bytes_t output, size_t output_len);

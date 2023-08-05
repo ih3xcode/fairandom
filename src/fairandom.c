@@ -4,6 +4,12 @@
 #include <math.h>
 #include <string.h>
 
+#ifdef _FR_VERSION
+#define FR_VERSION _FR_VERSION
+#else
+#define FR_VERSION "undefined"
+#endif
+
 FrGenerator *fr_generator_new(uint32_t rounds, fr_salt_t salt) {
   FrGenerator *generator = malloc(sizeof(FrGenerator));
   if (generator == NULL) {
@@ -65,3 +71,5 @@ void fr_generator_generate(FrGenerator *generator, fr_bytes_t output,
   // Free the concatenated blocks
   free(concatenated);
 }
+
+char *fr_get_version(void) { return FR_VERSION; }

@@ -1,3 +1,4 @@
+#include <fairandom/fairandom.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <xcmdparser.h>
@@ -34,7 +35,7 @@ int main(int argc, char **argv) {
 
 static cmdp_action_t cb_top_level(cmdp_process_param_st *params) {
   if (g_arg_top.version) {
-    printf("fairandom-cli version 0.1.0\n");
+    printf("libfairandom version %s\n", fr_get_version());
     return CMDP_ACT_OK;
   }
   if (params->next == NULL) {

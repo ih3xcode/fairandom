@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 
 project(
     fairandom
-    VERSION 1.0.0
+    VERSION 0.1.0
     DESCRIPTION "A provable random generator"
     LANGUAGES C
 )
