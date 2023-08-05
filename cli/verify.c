@@ -10,9 +10,7 @@
 
 #include "cli.h"
 
-static struct {
-  bool hex;
-} arg_verify;
+static struct { bool hex; } arg_verify;
 
 static cmdp_action_t cb_verify(cmdp_process_param_st *params);
 
