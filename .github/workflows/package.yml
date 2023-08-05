@@ -1,0 +1,43 @@
+name: Package
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  package:
+    name: Package for distribution
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Package
+      working-directory: ${{github.workspace}}/build
+      run: cpack -G TGZ -C ${{env.BUILD_TYPE}}
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.BUILD_TYPE }}
+        path: ${{ github.workspace }}/build/Packaging
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          ${{ github.workspace }}/build/Packaging/*
+          LICENSE
+          NOTICE
+        tag_name: ${{ github.ref }}
