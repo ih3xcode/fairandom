@@ -67,4 +67,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.BUILD_TYPE }}
-        path: ${{ github.workspace }}/build/*.tar.gz
+        path: ${{ github.workspace }}/build/Packaging
