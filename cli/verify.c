@@ -1,7 +1,10 @@
 #include <errno.h>
-#include <fairandom/fairandom.h>
 #include <fairandom/hex.h>
 #include <fairandom/proof.h>
+#include <fairandom/types.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <xcmdparser.h>
 
@@ -44,15 +47,15 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
     return CMDP_ACT_ERROR | CMDP_ACT_SHOW_HELP;
   }
 
-  FILE *fp = fopen(input_file, "rb");
-  if (fp == NULL) {
+  FILE *input_fp = fopen(input_file, "rb");
+  if (input_fp == NULL) {
     fprintf(stderr, "fopen(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
 
-  fseek(fp, 0, SEEK_END);
-  size_t data_file_size = ftell(fp);
-  fseek(fp, 0, SEEK_SET);
+  fseek(input_fp, 0, SEEK_END);
+  size_t data_file_size = ftell(input_fp);
+  fseek(input_fp, 0, SEEK_SET);
 
   fr_bytes_t data = malloc(data_file_size);
   if (data == NULL) {
@@ -60,11 +63,11 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
     return CMDP_ACT_ERROR;
   }
 
-  if (fread(data, 1, data_file_size, fp) != data_file_size) {
+  if (fread(data, 1, data_file_size, input_fp) != data_file_size) {
     fprintf(stderr, "fread(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
-  fclose(fp);
+  fclose(input_fp);
 
   FILE *proof_fp = fopen(strcat(input_file, ".proof"), "rb");
   if (proof_fp == NULL) {
@@ -77,8 +80,8 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
   fseek(proof_fp, 0, SEEK_SET);
 
   if (proof_file_size !=
-      FR_PROOF_STRING_LEN - 1) {  // Proof string in file does
-                                  // not include null-terminator
+      FR_PROOF_STRING_LEN - 1) { // Proof string in file does
+                                 // not include null-terminator
     fprintf(stderr, "fatal: proof file must be %lu bytes in length\n",
             FR_PROOF_STRING_LEN);
     return CMDP_ACT_ERROR;
@@ -151,10 +154,14 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
   free(seed_data);
 
   if (result) {
-    if (!g_arg_top.silent) printf("OK\n");
+    if (!g_arg_top.silent) {
+      printf("OK\n");
+    }
     return CMDP_ACT_OK;
-  } else {
-    if (!g_arg_top.silent) printf("FAIL\n");
-    return CMDP_ACT_ERROR;
   }
+
+  if (!g_arg_top.silent) {
+    printf("FAIL\n");
+  }
+  return CMDP_ACT_ERROR;
 }

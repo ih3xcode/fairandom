@@ -1,0 +1,55 @@
+---
+Checks:          "clang-analyzer-*,\
+  cert-*,\
+  bugprone-*,\
+  misc-*,\
+  portability-*,\
+  openmp-*,\
+  readability-*,\
+  concurrency-*,\
+  modernize-*,\
+  performance-*,\
+  google-*,\
+  -cert-err33-c,\
+  -clang-analyzer-security.insecureAPI.*,\
+  -readability-function-cognitive-complexity,\
+  -concurrency-mt-unsafe"
+WarningsAsErrors: ''
+HeaderFileExtensions:
+  - ''
+  - h
+  - hh
+  - hpp
+  - hxx
+ImplementationFileExtensions:
+  - c
+  - cc
+  - cpp
+  - cxx
+HeaderFilterRegex: ''
+AnalyzeTemporaryDtors: false
+FormatStyle:     none
+User:            vscode
+CheckOptions:
+  - key: 'bugprone-argument-comment.StrictMode'
+    value: 'true'
+  - key: 'bugprone-argument-comment.CommentBoolLiterals'
+    value: 'true'
+  - key: 'bugprone-misplaced-widening-cast.CheckImplicitCasts'
+    value: 'true'
+  - key: 'bugprone-sizeof-expression.WarnOnSizeOfIntegerExpression'
+    value: 'true'
+  - key: 'bugprone-suspicious-string-compare.WarnOnLogicalNotComparison'
+    value: 'true'
+  - key: 'readability-simplify-boolean-expr.ChainedConditionalReturn'
+    value: 'true'
+  - key: 'readability-simplify-boolean-expr.ChainedConditionalAssignment'
+    value: 'true'
+  - key: 'readability-else-after-return.WarnOnUnfixable'
+    value: 'true'
+  - key: 'readability-else-after-return.WarnOnConditionVariables'
+    value: 'true'
+  - key: 'readability-inconsistent-declaration-parameter-name.Strict'
+    value: 'true'
+SystemHeaders:   false
+...

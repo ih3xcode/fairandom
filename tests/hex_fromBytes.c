@@ -19,5 +19,5 @@ const unsigned char TEST_DATA_HEX[TEST_DATA_LEN * 2 + 1] =
 int main(void) {
   unsigned char output[TEST_DATA_LEN * 2 + 1];
   Fr_BytesToHex((fr_bytes_t)TEST_DATA_BYTES, TEST_DATA_LEN, (fr_bytes_t)output);
-  return strcmp((const char*)output, (const char*)TEST_DATA_HEX);
+  return strcmp((const char *)output, (const char *)TEST_DATA_HEX);
 }

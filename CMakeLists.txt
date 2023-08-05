@@ -22,15 +22,13 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   # main CMakeLists.
   include(CTest)
 
-  include(InstallRequiredSystemLibraries)
-  set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
-  set(CPACK_PACKAGE_VERSION_MAJOR "${fairandom_VERSION_MAJOR}")
-  set(CPACK_PACKAGE_VERSION_MINOR "${fairandom_VERSION_MINOR}")
-  set(CPACK_PACKAGE_VERSION_PATCH "${fairandom_VERSION_PATCH}")
-  set(CPACK_PACKAGE_VENDOR "h3xcode")
-  set(CPACK_OUTPUT_FILE_PREFIX "Packaging")
-  set(CPACK_SOURCE_GENERATOR "TGZ")
-  include(CPack)
+  include(cmake/cpack.cmake)
+  include(cmake/style.cmake)
+  include(cmake/clang-tidy.cmake)
+
+  # set standard to c11
+
+  set(CMAKE_C_STANDARD 11)
 
   # Docs only available if this is the main app
   #find_package(Doxygen)

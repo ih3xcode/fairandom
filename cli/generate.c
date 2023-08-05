@@ -2,7 +2,9 @@
 #include <fairandom/fairandom.h>
 #include <fairandom/hex.h>
 #include <fairandom/proof.h>
-#include <math.h>
+#include <fairandom/types.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <xcmdparser.h>
@@ -53,10 +55,10 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
   char *input_file = NULL;
 
   if (params->argc == 1) {
-    length = atoi(params->argv[0]);
+    length = (int)strtol(params->argv[0], NULL, INT_BASE);
     input_file = NULL;
   } else if (params->argc == 2) {
-    length = atoi(params->argv[0]);
+    length = (int)strtol(params->argv[0], NULL, INT_BASE);
     input_file = params->argv[1];
   } else {
     fprintf(stderr, "fatal: too many arguments\n\n");
@@ -83,11 +85,12 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
     if (strlen(arg_generate.salt) != HEX_LEN(FR_SALT_LEN)) {
       fprintf(stderr, "fatal: salt must be %d bytes in hex format\n\n",
               FR_SALT_LEN);
+      free(salt);
       return CMDP_ACT_ERROR | CMDP_ACT_SHOW_HELP;
     }
     Fr_HexToBytes((fr_bytes_t)arg_generate.salt, FR_SALT_LEN, salt);
   } else {
-    memcpy(salt, FR_DEFAULT_SALT, FR_SALT_LEN);
+    memcpy_s(salt, FR_SALT_LEN, FR_DEFAULT_SALT, FR_SALT_LEN);
   }
 
   if (!g_arg_top.silent) {
@@ -111,15 +114,15 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
   if (arg_generate.random_seed) {
     fr_generator_seed(generator, FR_SEED_TYPE_RANDOM, NULL, seed_len);
   } else {
-    FILE *fp = fopen(input_file, "rb");
-    if (fp == NULL) {
+    FILE *input_fp = fopen(input_file, "rb");
+    if (input_fp == NULL) {
       fprintf(stderr, "fopen(): %s\n", (fr_bytes_t)strerror(errno));
       return CMDP_ACT_ERROR;
     }
 
-    fseek(fp, 0, SEEK_END);
-    size_t input_file_size = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
+    fseek(input_fp, 0, SEEK_END);
+    size_t input_file_size = ftell(input_fp);
+    fseek(input_fp, 0, SEEK_SET);
 
     if (input_file_size < seed_len) {
       fprintf(stderr,
@@ -134,24 +137,24 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
       return CMDP_ACT_ERROR;
     }
 
-    if (fread(input, 1, seed_len, fp) != seed_len) {
+    if (fread(input, 1, seed_len, input_fp) != seed_len) {
       fprintf(stderr, "fread(): %s\n", (fr_bytes_t)strerror(errno));
       return CMDP_ACT_ERROR;
     }
 
-    fclose(fp);
+    fclose(input_fp);
 
     fr_generator_seed(generator, FR_SEED_TYPE_STRING, input, seed_len);
     free(input);
   }
 
-  fr_bytes_t output = malloc(length);
-  if (output == NULL) {
+  fr_bytes_t randomness = malloc(length);
+  if (randomness == NULL) {
     fprintf(stderr, "malloc(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
 
-  Fr_Generate(generator, output, length);
+  Fr_Generate(generator, randomness, length);
 
   struct FrProof proof;
   fr_generate_proof(generator, &proof);
@@ -175,8 +178,8 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
   fr_generator_free(generator);
 
   if (arg_generate.output != NULL) {
-    FILE *fp = fopen(arg_generate.output, "wb");
-    if (fp == NULL) {
+    FILE *output_fp = fopen(arg_generate.output, "wb");
+    if (output_fp == NULL) {
       fprintf(stderr, "fopen(): %s\n", (fr_bytes_t)strerror(errno));
       return CMDP_ACT_ERROR;
     }
@@ -187,18 +190,18 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
         fprintf(stderr, "malloc(): %s\n", (fr_bytes_t)strerror(errno));
         return CMDP_ACT_ERROR;
       }
-      Fr_BytesToHex(output, length, hex_output);
-      fprintf(fp, "%s", hex_output);
+      Fr_BytesToHex(randomness, length, hex_output);
+      fprintf(output_fp, "%s", hex_output);
       free(hex_output);
     } else {
-      fwrite(output, 1, length, fp);
+      fwrite(randomness, 1, length, output_fp);
     }
 
     if (!g_arg_top.silent) {
       fprintf(stderr, "Output written to %s\n", arg_generate.output);
     }
 
-    fclose(fp);
+    fclose(output_fp);
 
     FILE *proof_fp = fopen(strcat(arg_generate.output, ".proof"), "wb");
     if (proof_fp == NULL) {
@@ -242,11 +245,11 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
         fprintf(stderr, "malloc(): %s\n", (fr_bytes_t)strerror(errno));
         return CMDP_ACT_ERROR;
       }
-      Fr_BytesToHex(output, length, hex_output);
+      Fr_BytesToHex(randomness, length, hex_output);
       printf("%s\n", hex_output);
       free(hex_output);
     } else {
-      fwrite(output, 1, length, stdout);
+      fwrite(randomness, 1, length, stdout);
     }
     printf("%s\n", str_proof);
     if (arg_generate.hex) {
@@ -263,7 +266,7 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
     }
   }
 
-  free(output);
+  free(randomness);
   free(str_proof);
   free(actual_seed);
 

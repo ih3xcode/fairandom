@@ -25,7 +25,7 @@ unsigned char TEST_VECTOR_RESULT[TEST_VECTOR_LEN] = {
 
 int main(void) {
   struct FrProof proof;
-  fr_proof_from_string(&proof, TEST_VECTOR_PROOF);
+  fr_proof_from_string(&proof, (fr_bytes_t)TEST_VECTOR_PROOF);
 
   return !fr_verify_proof(TEST_VECTOR, TEST_VECTOR_LEN, TEST_VECTOR_RESULT,
                           TEST_VECTOR_LEN, proof);

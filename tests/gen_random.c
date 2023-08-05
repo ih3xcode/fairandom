@@ -15,7 +15,7 @@ int main(void) {
         fr_generator_new(FR_DEFAULT_ROUNDS, FR_DEFAULT_SALT);
     fr_generator_seed(generator, FR_SEED_TYPE_RANDOM, NULL, TEST_VECTOR_LEN);
 
-    fr_generator_generate(generator, outputs[i], TEST_VECTOR_LEN);
+    fr_generator_generate(generator, (fr_bytes_t)outputs[i], TEST_VECTOR_LEN);
 
     fr_generator_free(generator);
   }
