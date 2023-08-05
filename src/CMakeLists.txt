@@ -22,3 +22,7 @@ source_group(
   TREE "${PROJECT_SOURCE_DIR}/include"
   PREFIX "Header Files"
   FILES ${HEADER_LIST})
+
+# install
+install(TARGETS fairandom DESTINATION lib)
+install(FILES ${HEADER_LIST} DESTINATION include/fairandom)

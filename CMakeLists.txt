@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 
 project(
     fairandom
-    VERSION 1.0
+    VERSION 1.0.0
     DESCRIPTION "A provable random generator"
     LANGUAGES C
 )
@@ -22,8 +22,14 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   # main CMakeLists.
   include(CTest)
 
-  #set(CMAKE_C_COMPILER "clang-10")
-  #set(CMAKE_CXX_COMPILER "clang-cpp-10")
+  include(InstallRequiredSystemLibraries)
+  set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+  set(CPACK_PACKAGE_VERSION_MAJOR "${fairandom_VERSION_MAJOR}")
+  set(CPACK_PACKAGE_VERSION_MINOR "${fairandom_VERSION_MINOR}")
+  set(CPACK_PACKAGE_VERSION_PATCH "${fairandom_VERSION_PATCH}")
+  set(CPACK_PACKAGE_VENDOR "h3xcode")
+  set(CPACK_SOURCE_GENERATOR "TGZ")
+  include(CPack)
 
   # Docs only available if this is the main app
   #find_package(Doxygen)
