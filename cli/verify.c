@@ -44,7 +44,7 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
 
   FILE *fp = fopen(input_file, "rb");
   if (fp == NULL) {
-    fprintf(stderr, "fopen(): %s\n", (char *)strerror(errno));
+    fprintf(stderr, "fopen(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
 
@@ -52,21 +52,21 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
   size_t data_file_size = ftell(fp);
   fseek(fp, 0, SEEK_SET);
 
-  char *data = malloc(data_file_size);
+  fr_bytes_t data = malloc(data_file_size);
   if (data == NULL) {
-    fprintf(stderr, "malloc(): %s\n", (char *)strerror(errno));
+    fprintf(stderr, "malloc(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
 
   if (fread(data, 1, data_file_size, fp) != data_file_size) {
-    fprintf(stderr, "fread(): %s\n", (char *)strerror(errno));
+    fprintf(stderr, "fread(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
   fclose(fp);
 
   FILE *proof_fp = fopen(strcat(input_file, ".proof"), "rb");
   if (proof_fp == NULL) {
-    fprintf(stderr, "fopen(): %s\n", (char *)strerror(errno));
+    fprintf(stderr, "fopen(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
 
@@ -82,14 +82,14 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
     return CMDP_ACT_ERROR;
   }
 
-  char *proof_data = malloc(proof_file_size);
+  fr_bytes_t proof_data = malloc(proof_file_size);
   if (proof_data == NULL) {
-    fprintf(stderr, "malloc(): %s\n", (char *)strerror(errno));
+    fprintf(stderr, "malloc(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
 
   if (fread(proof_data, 1, proof_file_size, proof_fp) != proof_file_size) {
-    fprintf(stderr, "fread(): %s\n", (char *)strerror(errno));
+    fprintf(stderr, "fread(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
 
@@ -97,7 +97,7 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
 
   FILE *seed_fp = fopen(strcat(input_file, ".seed"), "rb");
   if (seed_fp == NULL) {
-    fprintf(stderr, "fopen(): %s\n", (char *)strerror(errno));
+    fprintf(stderr, "fopen(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
 
@@ -105,14 +105,14 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
   size_t seed_file_size = ftell(seed_fp);
   fseek(seed_fp, 0, SEEK_SET);
 
-  char *seed_data = malloc(seed_file_size);
+  fr_bytes_t seed_data = malloc(seed_file_size);
   if (seed_data == NULL) {
-    fprintf(stderr, "malloc(): %s\n", (char *)strerror(errno));
+    fprintf(stderr, "malloc(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
 
   if (fread(seed_data, 1, seed_file_size, seed_fp) != seed_file_size) {
-    fprintf(stderr, "fread(): %s\n", (char *)strerror(errno));
+    fprintf(stderr, "fread(): %s\n", (fr_bytes_t)strerror(errno));
     return CMDP_ACT_ERROR;
   }
 
@@ -120,13 +120,13 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
 
   if (arg_verify.hex) {
     data_file_size /= 2;
-    char *data_raw = malloc(data_file_size);
+    fr_bytes_t data_raw = malloc(data_file_size);
     Fr_HexToBytes(data, data_file_size, data_raw);
     free(data);
     data = data_raw;
 
     seed_file_size /= 2;
-    char *seed_raw = malloc(seed_file_size);
+    fr_bytes_t seed_raw = malloc(seed_file_size);
     Fr_HexToBytes(seed_data, seed_file_size, seed_raw);
     free(seed_data);
     seed_data = seed_raw;
@@ -139,8 +139,6 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
   }
 
   struct FrProof proof;
-  proof_data = realloc(proof_data, FR_PROOF_STRING_LEN);
-  proof_data[FR_PROOF_STRING_LEN - 1] = '\0';
   fr_proof_from_string(&proof, proof_data);
   free(proof_data);
 

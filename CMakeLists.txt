@@ -7,6 +7,9 @@ project(
     LANGUAGES C
 )
 
+#add_compile_options(-fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -g)
+#add_link_options(-fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -g)
+
 # Only do these if this is the main project, and not if it is included through add_subdirectory
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 

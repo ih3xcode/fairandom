@@ -12,7 +12,7 @@
             "args": [
                 "verify",
                 "-x",
-                "abc",
+                "testfile",
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -4,7 +4,7 @@
 
 #define TEST_DATA_LEN 64
 
-const char TEST_DATA_BYTES[TEST_DATA_LEN] = {
+const unsigned char TEST_DATA_BYTES[TEST_DATA_LEN] = {
     0x92, 0x6A, 0x55, 0x6C, 0xA9, 0x6C, 0xE1, 0x59, 0x6D, 0xF9, 0x09,
     0xA1, 0x33, 0xA7, 0xD5, 0x98, 0x58, 0xF1, 0x4F, 0xA2, 0x40, 0x8D,
     0xB4, 0x66, 0xC0, 0x47, 0x81, 0x51, 0x4A, 0xA0, 0xEE, 0x5C, 0x4D,
@@ -12,12 +12,12 @@ const char TEST_DATA_BYTES[TEST_DATA_LEN] = {
     0x10, 0x09, 0x1C, 0xFB, 0x7E, 0x75, 0x32, 0x9F, 0xD8, 0x2A, 0x5B,
     0x4D, 0xAD, 0x2E, 0xCB, 0xD1, 0x11, 0x0F, 0xA7, 0xDA};
 
-const char TEST_DATA_HEX[TEST_DATA_LEN * 2 + 1] =
+const unsigned char TEST_DATA_HEX[TEST_DATA_LEN * 2 + 1] =
     "926a556ca96ce1596df909a133a7d59858f14fa2408db466c04781514aa0ee5c4d2490b629"
     "c68adcdc984b5110091cfb7e75329fd82a5b4dad2ecbd1110fa7da";
 
 int main(void) {
-  char output[TEST_DATA_LEN * 2 + 1];
-  Fr_BytesToHex(TEST_DATA_BYTES, TEST_DATA_LEN, output);
-  return strcmp(output, TEST_DATA_HEX);
+  unsigned char output[TEST_DATA_LEN * 2 + 1];
+  Fr_BytesToHex((fr_bytes_t)TEST_DATA_BYTES, TEST_DATA_LEN, (fr_bytes_t)output);
+  return strcmp((const char*)output, (const char*)TEST_DATA_HEX);
 }

@@ -8,13 +8,13 @@
 
 struct FrProof {
   uint32_t rounds;
-  char salt[FR_SALT_LEN];
-  char proof[32];
+  fr_salt_t salt;
+  unsigned char proof[32];
 };
 
 void fr_generate_proof(FrGenerator *generator, struct FrProof *proof);
-bool fr_verify_proof(char *seed, size_t seed_len, char *data, size_t data_len,
-                     struct FrProof proof);
+bool fr_verify_proof(fr_bytes_t seed, size_t seed_len, fr_bytes_t data,
+                     size_t data_len, struct FrProof proof);
 
-void fr_proof_as_string(struct FrProof *proof, char *output);
-void fr_proof_from_string(struct FrProof *proof, const char *input);
+void fr_proof_as_string(struct FrProof *proof, fr_bytes_t output);
+void fr_proof_from_string(struct FrProof *proof, const fr_bytes_t input);

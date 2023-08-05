@@ -6,7 +6,8 @@
 #define TEST_VECTORS_COUNT 4
 #define TEST_VECTOR_LEN 64
 
-#define testvec_array(name) char name[TEST_VECTORS_COUNT][TEST_VECTOR_LEN]
+#define testvec_array(name) \
+  unsigned char name[TEST_VECTORS_COUNT][TEST_VECTOR_LEN]
 
 testvec_array(test_vectors) = {
     {0x69, 0xF7, 0x4D, 0x2A, 0x7E, 0x1A, 0x36, 0x41, 0xA5, 0xA4, 0xFC,
@@ -48,7 +49,7 @@ int main(void) {
   for (int i = 0; i < TEST_VECTORS_COUNT; i++) {
     FrGenerator *generator =
         fr_generator_new(FR_DEFAULT_ROUNDS, FR_DEFAULT_SALT);
-    fr_generator_seed(generator, FR_SEED_TYPE_STRING, test_vectors[i],
+    fr_generator_seed(generator, FR_SEED_TYPE_STRING, (char *)test_vectors[i],
                       TEST_VECTOR_LEN);
 
     struct FrProof proof;

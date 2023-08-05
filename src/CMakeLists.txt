@@ -14,6 +14,9 @@ target_link_libraries(fairandom m)
 # We need this directory, and users of our library will need it too
 target_include_directories(fairandom PUBLIC ../include)
 
+target_compile_options(fairandom PRIVATE -Wall -Wextra -Wpedantic -Werror -Wno-missing-field-initializers)
+target_link_options(fairandom PRIVATE -Wall -Wextra -Wpedantic -Werror)
+
 # IDEs should put the headers in a nice place
 source_group(
   TREE "${PROJECT_SOURCE_DIR}/include"
