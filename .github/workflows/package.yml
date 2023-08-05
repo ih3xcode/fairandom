@@ -10,6 +10,7 @@ env:
 jobs:
   package:
     name: Package for distribution
+    permissions: write-all
     runs-on: ubuntu-latest
 
     steps:
