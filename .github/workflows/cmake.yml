@@ -70,7 +70,7 @@ jobs:
       run: cpack -G TGZ -C ${{env.BUILD_TYPE}}
 
     - name: Upload package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ env.BUILD_TYPE }}
         path: ${{ github.workspace }}/build/Packaging
