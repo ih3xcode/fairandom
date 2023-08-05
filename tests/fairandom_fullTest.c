@@ -14,7 +14,7 @@ int main(void) {
   fr_generate_proof(generator, &proof);
 
   char seed[TEST_DATA_LEN];
-  fr_generator_getseed(generator, seed, TEST_DATA_LEN);
+  fr_generator_getseed(generator, seed);
 
   fr_generator_free(generator);
 

@@ -170,7 +170,7 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
     return CMDP_ACT_ERROR;
   }
 
-  fr_generator_getseed(generator, actual_seed, seed_len);
+  fr_generator_getseed(generator, actual_seed);
 
   fr_generator_free(generator);
 

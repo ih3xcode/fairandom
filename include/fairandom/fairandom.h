@@ -26,8 +26,7 @@ void fr_generator_free(FrGenerator *generator);
 
 void fr_generator_seed(FrGenerator *generator, enum FrSeedType type,
                        fr_bytes_t seed, size_t seed_len);
-void fr_generator_getseed(FrGenerator *generator, fr_bytes_t output,
-                          size_t output_len);
+void fr_generator_getseed(FrGenerator *generator, fr_bytes_t output);
 
 void fr_generator_generate(FrGenerator *generator, fr_bytes_t output,
                            size_t output_len);

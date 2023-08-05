@@ -32,9 +32,7 @@ void fr_generator_seed(FrGenerator *generator, enum FrSeedType type,
   }
 }
 
-void fr_generator_getseed(FrGenerator *generator, fr_bytes_t output,
-                          size_t output_len) {
-  assert(output_len >= generator->seed_len);
+void fr_generator_getseed(FrGenerator *generator, fr_bytes_t output) {
   memcpy(output, generator->seed, generator->seed_len);
 }
 
