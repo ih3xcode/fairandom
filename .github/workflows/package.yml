@@ -36,8 +36,8 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
+        token: ${{ secrets.GITHUB_TOKEN }}
         files: |
           ${{ github.workspace }}/build/Packaging/*
           LICENSE
           NOTICE
-        tag_name: ${{ github.ref }}
