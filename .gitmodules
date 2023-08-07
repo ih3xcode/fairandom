@@ -1,3 +1,4 @@
 [submodule "xcmdparser"]
 	path = xcmdparser
 	url = https://github.com/c-h3xcode/xcmdparser
+	branch = v1.0.0
