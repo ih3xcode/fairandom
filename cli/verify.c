@@ -10,7 +10,9 @@
 
 #include "cli.h"
 
-static struct { bool hex; } arg_verify;
+static struct {
+  bool hex;
+} arg_verify;
 
 static cmdp_action_t cb_verify(cmdp_process_param_st *params);
 
@@ -58,11 +60,14 @@ static cmdp_action_t cb_verify(cmdp_process_param_st *params) {
   fr_bytes_t data = malloc(data_file_size);
   if (data == NULL) {
     fprintf(stderr, "malloc(): %s\n", (fr_bytes_t)strerror(errno));
+    fclose(input_fp);
     return CMDP_ACT_ERROR;
   }
 
   if (fread(data, 1, data_file_size, input_fp) != data_file_size) {
     fprintf(stderr, "fread(): %s\n", (fr_bytes_t)strerror(errno));
+    fclose(input_fp);
+    free(data);
     return CMDP_ACT_ERROR;
   }
   fclose(input_fp);

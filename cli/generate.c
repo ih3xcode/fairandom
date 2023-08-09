@@ -128,17 +128,21 @@ static cmdp_action_t cb_generate(cmdp_process_param_st *params) {
       fprintf(stderr,
               "fatal: input file must be at least %zu bytes in length\n",
               seed_len);
+      fclose(input_fp);
       return CMDP_ACT_ERROR;
     }
 
     fr_bytes_t input = malloc(seed_len);
     if (input == NULL) {
       fprintf(stderr, "malloc(): %s\n", (fr_bytes_t)strerror(errno));
+      fclose(input_fp);
       return CMDP_ACT_ERROR;
     }
 
     if (fread(input, 1, seed_len, input_fp) != seed_len) {
       fprintf(stderr, "fread(): %s\n", (fr_bytes_t)strerror(errno));
+      fclose(input_fp);
+      free(input);
       return CMDP_ACT_ERROR;
     }
 
